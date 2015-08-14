@@ -23,14 +23,22 @@ function [zGreen,zRed] = readskip(filename,startFrame,numFramesToSkip)
     for j=1:numFramesToRead
         allFrames   = sbxread(filename,j*numFramesToSkip,1);
         
-        greenFrames = squeeze(allFrames(1,:,:));
-        redFrames   = squeeze(allFrames(2,:,:));
+        if size(allFrames,1) > 1
+            greenFrames = squeeze(allFrames(1,:,:));
+            redFrames   = squeeze(allFrames(2,:,:));
+        else
+            greenFrames = allFrames;
+            redFrames   = zeros(size(greenFrames));
+        end
+        
         
         if ~isempty(info.aligned)
             greenFrames = circshift(greenFrames,info.aligned.T(j*numFramesToSkip,:)); 
-            redFrames   = circshift(redFrames,info.aligned.T(j*numFramesToSkip,:));     
+            if size(allFrames,1) > 1
+                redFrames   = circshift(redFrames,info.aligned.T(j*numFramesToSkip,:));     
+            end
         end
-        zGreen(:,:,j) = greenFrames;
-        zRed(:,:,j) = redFrames;
+        zGreen(:,:,j)   = greenFrames;
+        zRed(:,:,j)     = redFrames;
     end
 end

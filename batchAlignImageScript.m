@@ -54,7 +54,7 @@ function batchAlignImageScript(channelNum,numFramesToSkip)
         [zGreen,zRed]     = readskip(fullFileName,0,numFramesToSkip);
         disp(['Created average image for ' thisfilename]);
         avgImage = normImage(zGreen);
-        avgImage = [avgImage; normImage(zRed)];
+%         avgImage = [avgImage; normImage(zRed)];
 
         parsave([fullFileName '.image'],avgImage,channelNum,numFramesToSkip);
     end
